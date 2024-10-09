@@ -12,7 +12,7 @@ public record Artist
   public string? Name { set; get; }
 
   [Column("genre")]
-  public string? Genre { set; get; }
+  public Genre? Genre { set; get; }
 
   public List<Album>? Albums { set; get; }
 

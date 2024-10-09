@@ -9,12 +9,14 @@ public class MyDbContext : DbContext
 {
   private readonly IConfiguration configuration;
 
-  // Свойство DbSet для сущности Song
-  // public DbSet<Song> Songs { get; set; }
-  // public DbSet<Album> Albums { get; set; }
-  // public DbSet<Artist> Artists { get; set; }
-  // public DbSet<Genre> Genres { get; set; }
-  // public DbSet<SongsCollection> SongsCollection { get; set; }
+  public DbSet<Song> Songs { get; set; }
+  public DbSet<SongsCollection> SongsCollections { get; set; }
+  public DbSet<Album> Albums { get; set; }
+  public DbSet<Artist> Artists { get; set; }
+  public DbSet<Genre> Genres { get; set; }
+
+  public DbSet<ArtistSearchResult> ArtistSearchResults { get; set; }
+  public DbSet<AlbumAndCollectionSearchResult> AlbumAndCollectionSearchResults { get; set; }
 
   // Конструктор для DI (внедрения зависимостей)
   public MyDbContext(IConfiguration configuration) : base()
@@ -45,9 +47,12 @@ public class MyDbContext : DbContext
     }
     // Настраиваем многие ко многим отношения между Song и SongsCollection
     modelBuilder.Entity<Song>()
-        .HasMany(s => s.SongsCollections) // Указываем, что Song имеет много SongsCollections
-        .WithMany(sc => sc.Songs) // И SongsCollection имеет много Songs
-        .UsingEntity(j => j.ToTable("song_songs_collection")); // Имя промежуточной таблицы
+      .HasMany(s => s.SongsCollections) // Указываем, что Song имеет много SongsCollections
+      .WithMany(sc => sc.Songs) // И SongsCollection имеет много Songs
+      .UsingEntity(j => j.ToTable("song_songs_collection")); // Имя промежуточной таблицы
+
+    modelBuilder.Entity<ArtistSearchResult>().HasNoKey(); // Указываем, что нет первичного ключа
+    modelBuilder.Entity<AlbumAndCollectionSearchResult>().HasNoKey(); // Указываем, что нет первичного ключа
   }
 
 }

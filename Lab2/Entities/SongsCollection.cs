@@ -12,5 +12,5 @@ public class SongsCollection
   public string? Title { get; set; }
 
   // Связь с Song через промежуточную таблицу
-  public virtual ICollection<Song> Songs { get; set; } = new List<Song>(); // Инициализация списка
+  public virtual ICollection<Song> Songs { get; set; } = new List<Song>();
 }

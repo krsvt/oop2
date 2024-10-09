@@ -5,7 +5,6 @@ migration-generate-sql:
 migration-add:
 	dotnet ef migrations add $(shell date +"%Y%m%d%H%M%S")
 
-
 migration-up:
 	dotnet ef database update -v
 

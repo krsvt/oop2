@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab2.Entities;
 
-[Table("songs")]
+[Table("song")]
 public class Song
 {
   [Column("id")]
@@ -12,5 +12,5 @@ public class Song
   public string? Title { get; set; }
 
   // Связь с SongsCollection через промежуточную таблицу
-  public virtual ICollection<SongsCollection> SongsCollections { get; set; } = new List<SongsCollection>(); // Инициализация списка
+  public virtual ICollection<SongsCollection> SongsCollections { get; set; } = new List<SongsCollection>();
 }
