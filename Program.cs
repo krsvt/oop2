@@ -1,5 +1,6 @@
 ﻿using Lab2.Data;
 using Lab2.Services;
+using Lab2.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -33,18 +34,19 @@ using (var scope = serviceProvider.CreateScope())
         {
             Console.WriteLine("Введите имя артиста");
             var line = Parsing.ParseLine();
-            var artistResults = searchService.SearchByArtist(line);
-
-            if (artistResults.Count == 0)
+            List<ArtistSearchResult> results = searchService.SearchByArtist(line);
+            List<ArtistSearchResultAdapter> artists = results.Select(a => new ArtistSearchResultAdapter(a))
+                .ToList();
+            if (artists.Count == 0)
             {
                 Console.WriteLine("Нет таких!");
             }
             else
             {
                 Console.WriteLine("Найдено:");
-                foreach (var art in artistResults)
+                foreach (var art in artists)
                 {
-                    Console.WriteLine($"Имя: {art.ArtistName}");
+                    Console.WriteLine($"Имя: {art.Name}");
                 }
             }
             Console.WriteLine();

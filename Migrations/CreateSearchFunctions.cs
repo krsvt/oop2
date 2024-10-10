@@ -53,7 +53,6 @@ namespace lab2.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Удаление функций, если нужно
             migrationBuilder.Sql("DROP FUNCTION IF EXISTS SearchByArtist(TEXT);");
             migrationBuilder.Sql("DROP FUNCTION IF EXISTS SearchByAlbumsAndSongsCollections(TEXT);");
         }

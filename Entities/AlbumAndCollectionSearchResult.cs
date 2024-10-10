@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab2.Entities;
 
-public class AlbumAndCollectionSearchResult
+public record AlbumAndCollectionSearchResult
 {
   [Column("id")]
   public int Id { get; set; }

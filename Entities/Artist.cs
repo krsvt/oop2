@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Lab2.Entities;
 
 [Table("artist")]
-public record Artist
+public class Artist
 {
   [Column("id")]
   public int Id { set; get; }
