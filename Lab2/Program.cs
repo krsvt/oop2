@@ -1,8 +1,10 @@
 ﻿using Lab2.Data;
 using Lab2.Entities;
+using Lab2.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
@@ -10,161 +12,75 @@ var configuration = new ConfigurationBuilder()
     .Build();
 
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<IConfiguration>(configuration) // Добавляем IConfiguration
+    .AddSingleton<IConfiguration>(configuration)
+    .AddDbContext<MyDbContext>(options =>
+        options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")))
+    .AddScoped<PostgreSQlSearchService>()
     .BuildServiceProvider();
 
 using (var scope = serviceProvider.CreateScope())
 {
-    var dbContext = new MyDbContext(configuration);
+    var searchService = scope.ServiceProvider.GetRequiredService<PostgreSQlSearchService>();
 
-    // Создание новой сущности Song
-    // var song1 = new Song
-    // {
-    //     Title = "My Song Title"
-    // };
-    //
-    // var song2 = new Song
-    // {
-    //     Title = "My Song2 Title"
-    // };
-    // var songs1 = new List<Song>();
-    // songs1.Add(song1);
-    // songs1.Add(song2);
-    //
-    //
-    // var song3 = new Song
-    // {
-    //     Title = "My Song3 Title"
-    // };
-    //
-    // var song4 = new Song
-    // {
-    //     Title = "My Song4 Title"
-    // };
-    //
-    // var songs2 = new List<Song>();
-    // songs2.Add(song3);
-    // songs2.Add(song4);
-    //
-    // // Создание новой сущности Album
-    // var album1 = new Album
-    // {
-    //     Title = "My Album Title",
-    //     Songs = songs1
-    // };
-    //
-    // var album2 = new Album
-    // {
-    //     Title = "My Album2 Title",
-    //     Songs = songs2
-    // };
-    //
-    // // Создание новой сущности SongsCollection
-    // var songsCollection = new SongsCollection
-    // {
-    //     Title = "My Songs Collection"
-    // };
-    //
-    // songsCollection.Songs.Add(song1);
-    // song1.SongsCollections.Add(songsCollection);
-    //
-    // songsCollection.Songs.Add(song3);
-    // song3.SongsCollections.Add(songsCollection);
-    //
-    //
-    // var songsCollection2 = new SongsCollection
-    // {
-    //     Title = "My Songs Collection2"
-    // };
-    //
-    // songsCollection2.Songs.Add(song2);
-    // song2.SongsCollections.Add(songsCollection2);
-    // songsCollection2.Songs.Add(song4);
-    // song4.SongsCollections.Add(songsCollection2);
-    //
-    // var albums1 = new List<Album>();
-    // albums1.Add(album1);
-    //
-    // var albums2 = new List<Album>();
-    // albums2.Add(album2);
-    //
-    // var genre1 = new Genre { Name = "RAP"};
-    // var genre2 = new Genre { Name = "POP"};
-    //
-    // var artist1 = new Artist
-    // {
-    //     Name = "A",
-    //     Genre = genre1,
-    //     Albums = albums1
-    // };
-    //
-    // var artist2 = new Artist
-    // {
-    //     Name = "B",
-    //     Genre = genre2,
-    //     Albums = albums2
-    // };
-    //
-    // dbContext.Albums.Add(album1);
-    // dbContext.Albums.Add(album2);
-    // dbContext.SongsCollections.Add(songsCollection);
-    // dbContext.SongsCollections.Add(songsCollection2);
-    // dbContext.Artists.Add(artist1);
-    // dbContext.Artists.Add(artist2);
-    //
-    //
-    // Сохранение в базу данных
-    //
-    //
-    var artistResults = dbContext.ArtistSearchResults
-        .FromSqlRaw("SELECT * FROM SearchByArtist({0})", "А")
-        .ToList();
+    var songsLetov = searchService.SearchSongsByCriterias("Юрий Лоза", "РЭП");
 
-    // Вызов функции SearchByAlbumsAndSongsCollections
-    var albumAndCollectionResults = dbContext.AlbumAndCollectionSearchResults
-        .FromSqlRaw("SELECT * FROM SearchByAlbumsAndSongsCollections({0})", "музыка")
-        .ToList();
-
-    Console.WriteLine("Результаты поиска по артистам:");
-    foreach (var artist in artistResults)
+    var notExit = true;
+    while (notExit)
     {
-        Console.WriteLine($"ID: {artist.ArtistId}, Имя: {artist.ArtistName}");
+
+        // 0 выход
+        // 1 искать по артисту
+        // 2 искать по названию
+        // 3 искать по критериям имя артиста + жанр
+        //
+
+        Console.WriteLine("0) выход");
+        Console.WriteLine("1) искать по артисту");
+        Console.WriteLine("2) искать по названию");
+        Console.WriteLine("3) искать по критериям имя артиста + жанр");
+        int choice = Parsing.ParseInt(0, 3);
+        if (choice == 0) notExit = false;
+        else if (choice == 1)
+        {
+            Console.WriteLine("Введите имя артиста");
+            var line = Parsing.ParseLine();
+            var artistResults = searchService.SearchByArtist(line);
+            Console.WriteLine("Найдено:");
+            foreach (var art in artistResults)
+            {
+                Console.WriteLine($"Имя: {art.ArtistName}");
+            }
+            Console.WriteLine();
+        }
+        else if (choice == 2)
+        {
+            Console.WriteLine("Введите имя альбома или коллекции");
+            var line = Parsing.ParseLine();
+            var albumAndCollectionResults = searchService.SearchByAlbumsAndSongsCollections(line);
+
+            Console.WriteLine("Найдено:");
+            foreach (var col in albumAndCollectionResults)
+            {
+                Console.WriteLine($"Название: {col.Title}, тип: {col.Type}");
+            }
+            Console.WriteLine();
+        }
+        else if (choice == 3)
+        {
+            Console.WriteLine("Введите <имя артиста> <жанр>");
+            var (artist, genre) = Parsing.ParseTwo();
+            var songs = searchService.SearchSongsByCriterias(artist, genre);
+
+            Console.WriteLine("Найдено:");
+            foreach (var son in songs)
+            {
+                Console.WriteLine($"Название: {son.Title}");
+            }
+            Console.WriteLine();
+        }
+
     }
-    Console.WriteLine("\nРезультаты поиска по альбомам и коллекциям:");
-    foreach (var albumOrCollection in albumAndCollectionResults)
-    {
-        Console.WriteLine($"ID: {albumOrCollection.Id}, Название: {albumOrCollection.Title}, Тип: {albumOrCollection.Type}");
-    }
-    dbContext.SaveChanges();
+
 }
-//
-// class Program
-// {
-//     static void Main(string[] args)
-//     {
-//         // Создаем конфигурацию и загружаем настройки из appsettings.json
-//         var builder = new ConfigurationBuilder()
-//             .SetBasePath(Directory.GetCurrentDirectory())  // Устанавливаем базовый путь
-//             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);  // Добавляем JSON файл конфигурации
-//
-//         IConfiguration config = builder.Build();
-//
-//         // Получаем настройку ApplicationName из конфигурации
-//         string appName = config["AppSettings:ApplicationName"] ?? "DefaultAppName";
-//         Console.WriteLine($"Application Name: {appName}");
-//
-//         using (var context = new MyDbContext(configuration))
-//         {
-//             var song = new Song
-//             {
-//                 Title = "My Song Title",
-//                       GenreId = 1, // Укажите правильный ID жанра
-//                       AlbumId = 1  // Укажите правильный ID альбома
-//             };
-//
-//             context.Songs.Add(song);
-//             context.SaveChanges();
-//         }
-//
-//     }
-// }
+
+

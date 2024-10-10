@@ -14,6 +14,6 @@ public record Artist
   [Column("genre")]
   public Genre? Genre { set; get; }
 
-  public List<Album>? Albums { set; get; }
+  public List<Album> Albums { set; get; } = new List<Album>();
 
 }

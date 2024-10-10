@@ -12,6 +12,6 @@ public record Album
   [Column("title")]
   public string? Title { set; get; }
 
-  public List<Song>? Songs { set; get; }
+  public List<Song> Songs { set; get; } = new List<Song>();
 
 }
