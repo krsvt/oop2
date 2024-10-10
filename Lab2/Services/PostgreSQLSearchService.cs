@@ -1,7 +1,6 @@
 using Lab2.Entities;
 using Lab2.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Lab2.Services;
 
@@ -32,45 +31,40 @@ public class PostgreSQlSearchService : SearchService
         return albumAndCollectionResults.Cast<AlbumAndCollectionSearchResult>().ToList();
     }
 
-    private List<Song> AllSongsByArtist(Artist artist)
+    private List<Song> SongsStartsWith(Artist artist, string songName)
     {
-        return artist.Albums
-            .SelectMany(album => album.Songs ?? Enumerable.Empty<Song>())
-            .ToList() ?? new List<Song>();
+        var allSongs = artist
+            .Albums
+            .SelectMany(album => album.Songs)
+            .ToList();
+        return allSongs.Where(s => s.Title.ToLower().StartsWith(songName.ToLower())).ToList();
     }
 
-    // если артист найден, у него такой жанр - вернем все его песни
-    // в любых других случаях ничего не вернем
-    // тупые критерии, но в теории может быть использовано с одинаковыми никнеймами но разными жанрами
-    public List<Song> SearchSongsByCriterias(string artistName, string genreName)
+    private List<Song> SongsStartsWith(DbSet<Artist> artists, string songName)
     {
-        var artist = _dbContext.Artists
-            .Include(a => a.Genre)
+        return artists
             .Include(a => a.Albums)
             .ThenInclude(album => album.Songs)
-            .FirstOrDefault(a => a.Name != null && a.Name.ToLower() == artistName.ToLower());
+            .SelectMany(artist => artist.Albums)
+            .SelectMany(album => album.Songs)
+            .Where(song => song.Title.ToLower().StartsWith(songName.ToLower())).ToList();
+    }
 
-        // Если артист не найден, пустой список
-        if (artist == null)
+    // исполнитель найден -> ищем только его песни
+    // исполнитель не найден -> ищем имя песни по всем
+    public List<Song> SearchSongsByCriterias(string artistName, string songName)
+    {
+        var artist = _dbContext.Artists
+            .Include(a => a.Albums)
+            .ThenInclude(album => album.Songs)
+            .FirstOrDefault(a => a.Name.ToLower() == artistName.ToLower());
+
+        if (artist != null)
         {
-            return new List<Song>();
+            return SongsStartsWith(artist, songName);
         }
 
-        var genre = _dbContext.Genres
-            .FirstOrDefault(g => g.Name != null && (g.Name.ToLower() == genreName.ToLower()));
-
-        if (genre == null)
-        {
-            return new List<Song>();
-        }
-        else if (artist.Genre != null && artist.Genre.Name != null && artist.Genre.Name.Equals(genre.Name))
-        {
-            return AllSongsByArtist(artist);
-        }
-        else
-        {
-            return new List<Song>();
-        }
+        return SongsStartsWith(_dbContext.Artists, songName);
 
     }
 }

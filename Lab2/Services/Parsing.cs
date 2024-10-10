@@ -61,20 +61,20 @@ public class Parsing
     }
   }
 
-  public static (string artist, string genre) ParseTwo()
+  public static (string first, string second) ParseTwo()
   {
     var line = ParseLine();
-    string pattern = @"^\S+\s\S+$";
+    string pattern = @"^([^,]+),\s*(.+)$";
     while (true)
     {
       if (Regex.IsMatch(line, pattern))
       {
         Console.WriteLine();
-        var words = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var words = line.Split(", ", StringSplitOptions.RemoveEmptyEntries);
         return (words.Length > 0 ? words[0] : string.Empty,
             words.Length > 1 ? words[1] : string.Empty);
       }
-      Console.WriteLine("Ошибка: должно быть два слова");
+      Console.WriteLine("Ошибка: должно быть две строки, разделенные запятой");
       Console.Write("=>");
     }
   }
