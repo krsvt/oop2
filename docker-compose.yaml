@@ -1,10 +1,12 @@
+volumes:
+  lab-volume: {}
 services:
   database:
     container_name: lab-db
     image: postgres:16
     restart: unless-stopped
     volumes:
-      - ./pgdata:/var/lib/postgresql/data/
+      - lab-volume:/var/lib/postgresql/data/
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
