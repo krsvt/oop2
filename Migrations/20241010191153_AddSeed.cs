@@ -5,7 +5,7 @@
 namespace lab2.Migrations
 {
     /// <inheritdoc />
-    public partial class SeedDataMigration : Migration
+    public partial class AddSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -45,7 +45,7 @@ namespace lab2.Migrations
                     ('ТЕХНО'),
                     ( 'ФОЛК');
                     ");
-                    migrationBuilder.Sql(@"
+            migrationBuilder.Sql(@"
                             -- Заполнение таблицы артистов
                             INSERT INTO artist (name, ""GenreId"") VALUES
                             ('Юрий Лоза', 1),
@@ -59,7 +59,7 @@ namespace lab2.Migrations
                             ('Егор Летов', 3),
                             ('Король и Шут', 3);
                             ");
-                            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(@"
                                     -- Заполнение таблицы альбомов
                                     INSERT INTO album (title, ""ArtistId"") VALUES
                                     ('Лоза на волне', 1),               -- Юрий Лоза
@@ -84,7 +84,7 @@ namespace lab2.Migrations
                                     ('Завет', 10);                      -- Король и Шут
                                     ");
 
-                            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(@"
                                     -- Заполнение таблицы песен
                                     INSERT INTO song (title, ""AlbumId"") VALUES
                                     ('Забудь и вспомни', 1),
@@ -110,7 +110,7 @@ namespace lab2.Migrations
                             ");
 
 
-                            migrationBuilder.Sql(@"
+            migrationBuilder.Sql(@"
                                     -- Заполнение таблиц коллекций песен
                                     INSERT INTO songs_collection (title) VALUES
                                     ('Сборник 1'),
@@ -119,7 +119,7 @@ namespace lab2.Migrations
                                     ('Сборник 4'),
                                     ('Сборник 5');
                                     ");
-                                    migrationBuilder.Sql(@"
+            migrationBuilder.Sql(@"
                                             -- Заполнение таблицы связей песен и коллекций
                                             INSERT INTO song_songs_collection (""SongsId"", ""SongsCollectionsId"") VALUES
                                             (1, 1),
@@ -138,11 +138,7 @@ namespace lab2.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // migrationBuilder.DropTable(
-            //         name: "AlbumAndCollectionSearchResults");
-            //
-            // migrationBuilder.DropTable(
-            //         name: "ArtistSearchResults");
+
         }
     }
 }

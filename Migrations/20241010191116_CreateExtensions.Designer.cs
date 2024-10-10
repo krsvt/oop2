@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace lab2.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241010160441_CreateDatabase")]
-    partial class CreateDatabase
+    [Migration("20241010191116_CreateExtensions")]
+    partial class CreateExtensions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,23 +48,6 @@ namespace lab2.Migrations
                     b.ToTable("album");
                 });
 
-            modelBuilder.Entity("Lab2.Entities.AlbumAndCollectionSearchResult", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.Property<string>("Type")
-                        .HasColumnType("text")
-                        .HasColumnName("type");
-
-                    b.ToTable("AlbumAndCollectionSearchResults");
-                });
-
             modelBuilder.Entity("Lab2.Entities.Artist", b =>
                 {
                     b.Property<int>("Id")
@@ -78,7 +61,6 @@ namespace lab2.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("name");
 
@@ -87,19 +69,6 @@ namespace lab2.Migrations
                     b.HasIndex("GenreId");
 
                     b.ToTable("artist");
-                });
-
-            modelBuilder.Entity("Lab2.Entities.ArtistSearchResult", b =>
-                {
-                    b.Property<int>("ArtistId")
-                        .HasColumnType("integer")
-                        .HasColumnName("artist_id");
-
-                    b.Property<string>("ArtistName")
-                        .HasColumnType("text")
-                        .HasColumnName("artist_name");
-
-                    b.ToTable("ArtistSearchResults");
                 });
 
             modelBuilder.Entity("Lab2.Entities.Genre", b =>
@@ -133,7 +102,6 @@ namespace lab2.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("title");
 

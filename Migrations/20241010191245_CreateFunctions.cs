@@ -2,12 +2,12 @@
 
 #nullable disable
 
-// моё творение с другом chatgpt
 namespace lab2.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateSearchFunctions : Migration
+    public partial class CreateFunctions : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
@@ -51,10 +51,10 @@ namespace lab2.Migrations
                             ");
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP FUNCTION IF EXISTS SearchByArtist(TEXT);");
-            migrationBuilder.Sql("DROP FUNCTION IF EXISTS SearchByAlbumsAndSongsCollections(TEXT);");
+
         }
     }
 }

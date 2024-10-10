@@ -17,19 +17,21 @@ make migration-up
 
 ## Исполнение
 ```
-*[master][~/dev/itmo/oops/lab2/Lab2]$ dotnet run
+*[master][~/dev/itmo/oops/lab2]$ dotnet run
 0) выход
 1) искать по имени артиста
 2) искать по названию альбомы и сборники
 3) искать песни по критериям имя артиста + имя песни
 
+=>лозы
+Ошибка: введено не число. Попробуйте снова.
 =>1
 
 Введите имя артиста
-=>лозы   
+=>лозы
 
 Найдено:
-Имя: Юрий Лоза
+Имя артиста: Юрий Лоза
 
 0) выход
 1) искать по имени артиста
@@ -56,7 +58,7 @@ make migration-up
 
 
 Найдено:
-Название: Счастье
+Имя песни: Счастье
 
 0) выход
 1) искать по имени артиста
@@ -65,7 +67,28 @@ make migration-up
 
 =>0
 
-*[master][~/dev/itmo/oops/lab2/Lab2]$ 
+*[master][~/dev/itmo/oops/lab2]$ 
+```
+
+# БД
+```
+postgres=# \d
+                   List of relations
+ Schema |          Name           |   Type   |  Owner   
+--------+-------------------------+----------+----------
+ public | __EFMigrationsHistory   | table    | postgres
+ public | album                   | table    | postgres
+ public | album_id_seq            | sequence | postgres
+ public | artist                  | table    | postgres
+ public | artist_id_seq           | sequence | postgres
+ public | genre                   | table    | postgres
+ public | genre_id_seq            | sequence | postgres
+ public | song                    | table    | postgres
+ public | song_id_seq             | sequence | postgres
+ public | song_songs_collection   | table    | postgres
+ public | songs_collection        | table    | postgres
+ public | songs_collection_id_seq | sequence | postgres
+(12 rows)
 ```
 
 # Поиск

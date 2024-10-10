@@ -1,5 +1,6 @@
 using Lab2.Entities;
 using Lab2.Data;
+using Lab2.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lab2.Services;
@@ -13,22 +14,19 @@ public class PostgreSQlSearchService : SearchService
         _dbContext = dbContext;
     }
 
-    public List<ArtistSearchResult> SearchByArtist(string query)
+    public List<ArtistSearchResultDto> SearchByArtist(string query)
     {
-        var artistResults = _dbContext.ArtistSearchResults
+        return _dbContext.Set<ArtistSearchResultDto>()
             .FromSqlRaw("SELECT * FROM SearchByArtist({0})", query)
             .ToList();
 
-        return artistResults.Cast<ArtistSearchResult>().ToList();
     }
 
-    public List<AlbumAndCollectionSearchResult> SearchByAlbumsAndSongsCollections(string query)
+    public List<AlbumAndCollectionSearchResultDto> SearchByAlbumsAndSongsCollections(string query)
     {
-        var albumAndCollectionResults = _dbContext.AlbumAndCollectionSearchResults
+        return _dbContext.Set<AlbumAndCollectionSearchResultDto>()
             .FromSqlRaw("SELECT * FROM SearchByAlbumsAndSongsCollections({0})", query)
             .ToList();
-
-        return albumAndCollectionResults.Cast<AlbumAndCollectionSearchResult>().ToList();
     }
 
     private List<Song> SongsStartsWith(Artist artist, string songName)

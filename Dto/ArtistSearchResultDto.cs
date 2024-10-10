@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
+namespace Lab2.Dto;
 
-namespace Lab2.Entities;
-
-public record ArtistSearchResult
+public record ArtistSearchResultDto
 {
   [Column("artist_id")]
   public int ArtistId { get; set; }

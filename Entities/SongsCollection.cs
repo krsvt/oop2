@@ -9,7 +9,7 @@ public record SongsCollection
   public int Id { get; set; }
 
   [Column("title")]
-  public string? Title { get; set; }
+  public string Title { get; set; } = "abc";
 
   // Связь с Song через промежуточную таблицу
   public virtual ICollection<Song> Songs { get; set; } = new List<Song>();

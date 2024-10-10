@@ -1,17 +1,17 @@
-﻿using Lab2.Data;
+﻿
+using Lab2.Data;
+using Lab2.Dto;
 using Lab2.Services;
-using Lab2.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json")
+    .AddJsonFile("appsettings.json", optional: false)
     .Build();
 
 var serviceProvider = new ServiceCollection()
-    .AddSingleton<IConfiguration>(configuration)
     .AddDbContext<MyDbContext>(options =>
         options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")))
     .AddScoped<PostgreSQlSearchService>()
@@ -34,8 +34,9 @@ using (var scope = serviceProvider.CreateScope())
         {
             Console.WriteLine("Введите имя артиста");
             var line = Parsing.ParseLine();
-            List<ArtistSearchResult> results = searchService.SearchByArtist(line);
-            List<ArtistSearchResultAdapter> artists = results.Select(a => new ArtistSearchResultAdapter(a))
+            List<ArtistSearchResultDto> results = searchService.SearchByArtist(line);
+            List<ArtistSearchResultAdapter> artists =
+                results.Select(a => new ArtistSearchResultAdapter(a))
                 .ToList();
             if (artists.Count == 0)
             {
@@ -46,7 +47,7 @@ using (var scope = serviceProvider.CreateScope())
                 Console.WriteLine("Найдено:");
                 foreach (var art in artists)
                 {
-                    Console.WriteLine($"Имя: {art.Name}");
+                    Console.WriteLine($"Имя артиста: {art.Name}");
                 }
             }
             Console.WriteLine();
@@ -85,12 +86,10 @@ using (var scope = serviceProvider.CreateScope())
                 Console.WriteLine("Найдено:");
                 foreach (var son in songs)
                 {
-                    Console.WriteLine($"Название: {son.Title}");
+                    Console.WriteLine($"Имя песни: {son.Title}");
                 }
             }
             Console.WriteLine();
         }
     }
 }
-
-

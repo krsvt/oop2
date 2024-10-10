@@ -10,7 +10,7 @@ public record Album
   public int Id { set; get; }
 
   [Column("title")]
-  public string? Title { set; get; }
+  public string Title { set; get; } = "abc";
 
   public List<Song> Songs { set; get; } = new List<Song>();
 

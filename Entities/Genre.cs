@@ -9,6 +9,6 @@ public record Genre
   public int Id { set; get; }
 
   [Column("name")]
-  public string? Name { set; get; }
+  public string? Name { set; get; } = "abc";
 
 }

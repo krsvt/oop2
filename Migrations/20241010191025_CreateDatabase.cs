@@ -12,29 +12,6 @@ namespace lab2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AlbumAndCollectionSearchResults",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "integer", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: true),
-                    type = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ArtistSearchResults",
-                columns: table => new
-                {
-                    artist_id = table.Column<int>(type: "integer", nullable: false),
-                    artist_name = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                });
-
-            migrationBuilder.CreateTable(
                 name: "genre",
                 columns: table => new
                 {
@@ -66,7 +43,7 @@ namespace lab2.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "text", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: true),
                     GenreId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -104,7 +81,7 @@ namespace lab2.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    title = table.Column<string>(type: "text", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: true),
                     AlbumId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
@@ -165,12 +142,6 @@ namespace lab2.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AlbumAndCollectionSearchResults");
-
-            migrationBuilder.DropTable(
-                name: "ArtistSearchResults");
-
             migrationBuilder.DropTable(
                 name: "song_songs_collection");
 
