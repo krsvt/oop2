@@ -9,7 +9,7 @@ public record Artist
   public int Id { set; get; }
 
   [Column("name")]
-  public string? Name { set; get; }
+  public string Name { set; get; } = "";
 
   [Column("genre")]
   public Genre? Genre { set; get; }

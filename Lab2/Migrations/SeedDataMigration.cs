@@ -14,27 +14,22 @@ namespace lab2.Migrations
             migrationBuilder.Sql(@"
                     ALTER SEQUENCE genre_id_seq RESTART;
                     ");
-                    // SELECT setval('genre_id_seq', 1);
 
             migrationBuilder.Sql(@"
                     ALTER SEQUENCE album_id_seq RESTART;
                     ");
-                    // SELECT setval('album_id_seq', 1);
 
             migrationBuilder.Sql(@"
                     ALTER SEQUENCE artist_id_seq RESTART;
                     ");
-                    // SELECT setval('artist_id_seq', 1);
 
             migrationBuilder.Sql(@"
-                    ALTER SEQUENCE ""Songs_Id_seq"" RESTART;
+                    ALTER SEQUENCE song_id_seq RESTART;
                     ");
-                    // SELECT setval('""Songs_Id_seq""', 1);
 
             migrationBuilder.Sql(@"
                     ALTER SEQUENCE songs_collection_id_seq RESTART;
                     ");
-                    // SELECT setval('songs_collection_id_seq', 1);
 
             migrationBuilder.Sql(@"
                     -- Заполнение таблицы жанров

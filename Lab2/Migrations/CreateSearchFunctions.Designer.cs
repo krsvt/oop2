@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace lab2.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20241009222135_20241010012132")]
-    partial class _20241010012132
+    [Migration("CreateSearchFunctions")]
+    partial class CreateSearchFunctions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
