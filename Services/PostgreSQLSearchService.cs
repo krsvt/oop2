@@ -26,6 +26,22 @@ public class PostgreSQlSearchService : ISearchService
 
     }
 
+
+    public List<Artist> ExactSearchByArtist(string artistName)
+    {
+        return _dbContext
+            .Artists.Where(a => a.Name == artistName)
+            .ToList();
+    }
+
+
+    public List<Album> ExactSearchByAlbum(string album)
+    {
+        return _dbContext.Albums.
+            Where(a => a.Title == album)
+            .ToList();
+    }
+
     public List<AlbumAndCollectionSearchResultDto> FuzzySearchByAlbumsAndSongsCollections(string query)
     {
         return _dbContext.Set<AlbumAndCollectionSearchResultDto>()
@@ -56,6 +72,7 @@ public class PostgreSQlSearchService : ISearchService
     // исполнитель не найден -> ищем имя песни по всем
     public List<Song> SearchSongsByCriterias(string artistName, string songName)
     {
+
         var artist = _dbContext.Artists
             .Include(a => a.Albums)
             .ThenInclude(album => album.Songs)
@@ -67,7 +84,6 @@ public class PostgreSQlSearchService : ISearchService
         }
 
         return SongsStartsWith(_dbContext.Artists, songName);
-
     }
 
     public Genre? SearchGenre(string genre)

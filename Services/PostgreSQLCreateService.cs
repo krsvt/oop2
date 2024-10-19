@@ -64,10 +64,7 @@ public class PostgreSQLCreateService : ICreateService
     if (art == null)
       throw new NoSuchRecordException("не могу найти артиста " + artist);
 
-    var alb = Search.FuzzySearchByAlbumsAndSongsCollections(album)
-      .Where(a => a.Type != null)
-      .Where(a => a.Type == "album")
-      .FirstOrDefault();
+    var alb = Search.ExactSearchByAlbum(album).FirstOrDefault();
 
     if (alb == null)
       throw new NoSuchRecordException("не могу найти альбом " + album);
@@ -97,7 +94,7 @@ public class PostgreSQLCreateService : ICreateService
 
   public (Artist, Song, SongsCollection) AddSongToSongCollection(string artist, string songName, string collectionName)
   {
-    var art = Search.FuzzySearchByArtist(artist).FirstOrDefault();
+    var art = Search.ExactSearchByArtist(artist).FirstOrDefault();
     if (art == null)
       throw new NoSuchRecordException("не могу найти артиста " + artist);
 
@@ -106,7 +103,8 @@ public class PostgreSQLCreateService : ICreateService
     if (song == null)
       throw new NoSuchRecordException("не могу найти песню " + songName + " артиста " + art.Name);
 
-    var collection = _dbContext.SongsCollections.Where(c => c.Title.ToLower().Trim() == collectionName.ToLower().Trim())
+    var collection = _dbContext.SongsCollections.Where
+      (c => c.Title.ToLower().Trim() == collectionName.ToLower().Trim())
       .FirstOrDefault();
     if (collection == null)
       throw new NoSuchRecordException("не могу найти коллекцию " + collectionName);
