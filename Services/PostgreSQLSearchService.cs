@@ -14,15 +14,19 @@ public class PostgreSQlSearchService : ISearchService
         _dbContext = dbContext;
     }
 
-    public List<ArtistSearchResultDto> SearchByArtist(string query)
+    public List<Artist> FuzzySearchByArtist(string query)
     {
-        return _dbContext.Set<ArtistSearchResultDto>()
+        var artistDtos = _dbContext.Set<ArtistSearchResultDto>()
             .FromSqlRaw("SELECT * FROM SearchByArtist({0})", query)
+            .ToList();
+        var artistIds = artistDtos.Select(a => a.ArtistId);
+        return _dbContext.Artists
+            .Where(a => artistIds.Contains(a.Id))
             .ToList();
 
     }
 
-    public List<AlbumAndCollectionSearchResultDto> SearchByAlbumsAndSongsCollections(string query)
+    public List<AlbumAndCollectionSearchResultDto> FuzzySearchByAlbumsAndSongsCollections(string query)
     {
         return _dbContext.Set<AlbumAndCollectionSearchResultDto>()
             .FromSqlRaw("SELECT * FROM SearchByAlbumsAndSongsCollections({0})", query)
@@ -64,5 +68,11 @@ public class PostgreSQlSearchService : ISearchService
 
         return SongsStartsWith(_dbContext.Artists, songName);
 
+    }
+
+    public Genre? SearchGenre(string genre)
+    {
+        return _dbContext.Genres
+            .FirstOrDefault(g => g.Name.ToLower() == genre.ToLower());
     }
 }

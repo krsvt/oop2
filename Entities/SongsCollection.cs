@@ -7,8 +7,14 @@ public class SongsCollection : BaseIdIdentity
 {
 
   [Column("title")]
-  public string Title { get; set; } = "abc";
+  public string Title { get; set; } = "";
 
   // Связь с Song через промежуточную таблицу
   public virtual ICollection<Song> Songs { get; set; } = new List<Song>();
+
+
+  public override string ToString()
+  {
+    return $"{Title}";
+  }
 }

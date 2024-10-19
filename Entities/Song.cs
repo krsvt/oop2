@@ -11,4 +11,10 @@ public class Song : BaseIdIdentity
 
   // Связь с SongsCollection через промежуточную таблицу
   public virtual ICollection<SongsCollection> SongsCollections { get; set; } = new List<SongsCollection>();
+
+
+  public override string ToString()
+  {
+    return Title;
+  }
 }

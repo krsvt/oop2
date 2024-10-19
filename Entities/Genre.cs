@@ -7,6 +7,6 @@ public class Genre : BaseIdIdentity
 {
 
   [Column("name")]
-  public string? Name { set; get; } = "abc";
+  public string Name { set; get; } = "abc";
 
 }

@@ -61,12 +61,18 @@ public class Parsing
     }
   }
 
+
+  public static string ParseOne()
+  {
+    return ParseLine();
+  }
+
   public static (string first, string second) ParseTwo()
   {
-    var line = ParseLine();
     string pattern = @"^([^,]+),\s*(.+)$";
     while (true)
     {
+      var line = ParseLine();
       if (Regex.IsMatch(line, pattern))
       {
         Console.WriteLine();
@@ -75,7 +81,23 @@ public class Parsing
             words.Length > 1 ? words[1] : string.Empty);
       }
       Console.WriteLine("Ошибка: должно быть две строки, разделенные запятой");
-      Console.Write("=>");
+    }
+  }
+
+  public static (string first, string second, string third) ParseThree()
+  {
+    string pattern = @"^([^,]+),\s*([^,]+),\s*(.+)$";
+    while (true)
+    {
+      var line = ParseLine();
+      if (Regex.IsMatch(line, pattern))
+      {
+        var words = line.Split(", ", StringSplitOptions.RemoveEmptyEntries);
+        return (words.Length > 0 ? words[0] : string.Empty,
+            words.Length > 1 ? words[1] : string.Empty,
+            words.Length > 2 ? words[2] : string.Empty);
+      }
+      Console.WriteLine("Ошибка: должно быть три строки, разделённые запятыми");
     }
   }
 
