@@ -1,6 +1,7 @@
 ﻿
 using Lab2.Data;
 using Lab2.Dto;
+using Lab2.Entities;
 using Lab2.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +36,8 @@ using (var scope = serviceProvider.CreateScope())
             Console.WriteLine("Введите имя артиста");
             var line = Parsing.ParseLine();
             List<ArtistSearchResultDto> results = searchService.SearchByArtist(line);
-            List<ArtistSearchResultAdapter> artists =
-                results.Select(a => new ArtistSearchResultAdapter(a))
+            List<Artist> artists =
+                results.Select(a =>  new ArtistSearchResultAdapter(a).Artist)
                 .ToList();
             if (artists.Count == 0)
             {

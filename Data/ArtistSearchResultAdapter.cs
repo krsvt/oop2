@@ -5,12 +5,16 @@ namespace Lab2.Data;
 
 public class ArtistSearchResultAdapter : Artist
 {
-  public ArtistSearchResultAdapter() { }
+
+  public Artist Artist { get; private set; }
   public ArtistSearchResultAdapter(ArtistSearchResultDto searchResult)
   {
-    Id = searchResult.ArtistId;
-    Name = searchResult.ArtistName;
-    Genre = null;
-    Albums = new List<Album>();
+    Artist = new()
+    {
+      Id = searchResult.ArtistId,
+      Name = searchResult.ArtistName,
+      Genre = null,
+      Albums = new List<Album>()
+    };
   }
 }
