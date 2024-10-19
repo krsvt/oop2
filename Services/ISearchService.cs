@@ -3,7 +3,7 @@ using Lab2.Dto;
 
 namespace Lab2.Services;
 
-public interface SearchService
+public interface ISearchService
 {
   public List<ArtistSearchResultDto> SearchByArtist(string query);
   public List<AlbumAndCollectionSearchResultDto> SearchByAlbumsAndSongsCollections(string query);

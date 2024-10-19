@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lab2.Services;
 
-public class PostgreSQlSearchService : SearchService
+public class PostgreSQlSearchService : ISearchService
 {
     private readonly MyDbContext _dbContext;
 
