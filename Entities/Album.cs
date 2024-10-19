@@ -4,14 +4,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Lab2.Entities;
 
 [Table("album")]
-public record Album
+public class Album : BaseIdIdentity
 {
-  [Column("id")]
-  public int Id { set; get; }
 
   [Column("title")]
   public string Title { set; get; } = "abc";
 
   public List<Song> Songs { set; get; } = new List<Song>();
+
+  // public class Album() : base() { }
+  // public class Album(int id, string title) : base(id)
+  // { Title = title; }
 
 }

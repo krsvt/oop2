@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Lab2.Entities;
 
 [Table("artist")]
-public class Artist
+public class Artist : BaseIdIdentity
 {
-  [Column("id")]
-  public int Id { set; get; }
 
   [Column("name")]
   public string Name { set; get; } = "abc";
